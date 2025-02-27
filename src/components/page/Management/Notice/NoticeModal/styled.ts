@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+//css 를 자바스크립트처럼 사용가능
+
+import styled from "styled-components";
 
 export const NoticeModalStyled = styled.div`
     width: 100%;
@@ -17,7 +19,7 @@ export const NoticeModalStyled = styled.div`
         flex-direction: column;
     }
 
-    input[type='text'] {
+    input[type="text"] {
         padding: 8px;
         margin-top: 5px;
         margin-bottom: 5px;

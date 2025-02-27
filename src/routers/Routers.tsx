@@ -1,3 +1,5 @@
+//url 변경할때마다 어떤 컴포넌트 열릴지 설정
+
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 
 import { CommonCode } from "../../src/pages/management/CommonCode";
