@@ -45,7 +45,9 @@ export const NoticeModal: FC<INoticeModalProps> = ({ noticeId, setNoticeId, post
         };
     }, []);
 
-    const searchDetail = () => {
+    const searchDetail = async () => {
+        const result = await axios.post();
+
         axios
             .post("/management/noticeFileDetailBody.do", { noticeId })
             .then((res: AxiosResponse<INoticeDetailResponse>) => {

@@ -3,6 +3,13 @@ import { CommonCodeMainStyled } from "./styled";
 import { CommonCodeContext } from "../../../../../api/Provider/CommonCodeProvider";
 import axios, { AxiosResponse } from "axios";
 import { StyledButton } from "../../../../common/StyledButton/StyledButton";
+import { modalState } from "../../../../../stores/modalState";
+import { useRecoilState } from "recoil";
+import { Modal } from "react-bootstrap";
+import { CommonCodeModal } from "../CommonCodeModal/CommonCodeModal";
+import { Portal } from "../../../../common/potal/Portal";
+import { useNavigate } from "react-router-dom";
+import { searchApi } from "../../../../../api/CommonCodeApi/searchApi";
 
 interface ICommonCode {
     groupIdx: number;
@@ -18,25 +25,49 @@ interface ICommonCodeResponse {
     commonCode: ICommonCode[];
     commonCodeCnt: number;
 }
+
 export const CommonCodeMain = () => {
     const { searchKeyword } = useContext(CommonCodeContext);
     const [commonCodeList, setCommonCodeList] = useState<ICommonCode[]>();
+    const [modal, setModal] = useRecoilState(modalState);
+    const [groupId, setGroupId] = useState<number>(0);
+    const navigate = useNavigate();
+
+    const columns = [
+        { key: "groupIdx", title: "번호" },
+        { key: "groupCode", title: "그룹코드" },
+        { key: "groupName", title: "그룹코드명" },
+        { key: "note", title: "번호" },
+        { key", title: "번호" },
+        { key: "groupIdx", title: "번호" },
+    ] as Column;
 
     useEffect(() => {
         searchCommonCode();
     }, [searchKeyword]);
 
-    const searchCommonCode = (currentPage?: number) => {
+    const searchCommonCode = async (currentPage?: number) => {
         currentPage = currentPage || 1;
-        axios
-            .post("/management/commonCodeListBody.do", {
-                ...searchKeyword,
-                pageSize: 5,
-                currentPage,
-            })
-            .then((res: AxiosResponse<ICommonCodeResponse>) => {
-                setCommonCodeList(res.data.commonCode);
-            });
+
+        const result = await searchApi<ICommonCodeResponse>("/management/commonCodeListBody.do", {
+            ...searchKeyword,
+            pageSize: 5,
+            currentPage,
+        });
+
+        if (result) {
+            setCommonCodeList(result.commonCode);
+        }
+    };
+
+    const postSuccess = () => {
+        setModal(!modal);
+        searchCommonCode();
+    };
+
+    const handlerModal = (id: number) => {
+        setGroupId(id);
+        setModal(!modal);
     };
 
     return (
@@ -68,13 +99,30 @@ export const CommonCodeMain = () => {
                             return (
                                 <tr key={commonCode.groupIdx}>
                                     <td>{commonCode.groupIdx}</td>
-                                    <td>{commonCode.groupCode}</td>
+                                    <td
+                                        className='td-pointer'
+                                        onClick={() => {
+                                            navigate(`${commonCode.groupIdx}`, {
+                                                state: {
+                                                    groupCode: commonCode.groupCode,
+                                                },
+                                            });
+                                        }}
+                                    >
+                                        {commonCode.groupCode}
+                                    </td>
                                     <td>{commonCode.groupName}</td>
                                     <td>{commonCode.note}</td>
                                     <td>{commonCode.createdDate}</td>
                                     <td>{commonCode.useYn}</td>
                                     <td>
-                                        <StyledButton>수정</StyledButton>
+                                        <StyledButton
+                                            onClick={() => {
+                                                handlerModal(commonCode.groupIdx);
+                                            }}
+                                        >
+                                            수정
+                                        </StyledButton>
                                     </td>
                                 </tr>
                             );
@@ -86,6 +134,11 @@ export const CommonCodeMain = () => {
                     )}
                 </tbody>
             </table>
+            {modal && (
+                <Portal>
+                    <CommonCodeModal groupId={groupId} postSuccess={postSuccess} setGroupId={setGroupId} />
+                </Portal>
+            )}
         </CommonCodeMainStyled>
     );
 };
