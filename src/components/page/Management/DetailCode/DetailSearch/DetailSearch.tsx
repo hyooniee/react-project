@@ -12,8 +12,8 @@ export const DetailSearch = () => {
     const { setSearchKeyword } = useContext(CommonDetailCodeContext);
 
     const options = [
-        { label: "그룹코드명", value: "detailCodeName" },
-        { label: "그룹코드", value: "detailCode" },
+        { label: "상세코드명", value: "detailCodeName" },
+        { label: "상세코드", value: "detailCode" },
     ];
 
     const handlerSearch = () => {

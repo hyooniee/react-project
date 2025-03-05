@@ -8,6 +8,7 @@ import axios, { AxiosResponse } from "axios";
 import { searchApi } from "../../../../../api/CommonCodeApi/searchApi";
 import { postApi } from "../../../../../api/CommonCodeApi/postApi";
 import { CommonCode } from "../../../../../api/api";
+import { ICommonCode } from "../../../../../models/interface/ICommonCode";
 interface ICommonCodeModalProps {
     groupId: number;
     postSuccess: () => void;
@@ -41,7 +42,7 @@ export const CommonCodeModal: FC<ICommonCodeModalProps> = ({ groupId, postSucces
             alert("수정되었습니다.");
             postSuccess();
         } else if (result.result.startsWith("Duplicate")) {
-            alert("입력하신 그룹코드(${commonCode.groupCode})는 중복입니다.");
+            alert(`입력하신 그룹코드(${commonCode.groupCode})는 중복입니다.`);
             return false;
         }
     };
@@ -57,13 +58,11 @@ export const CommonCodeModal: FC<ICommonCodeModalProps> = ({ groupId, postSucces
         const result = await postApi(CommonCode.save, commonCode);
 
         if (result.result === "success") {
-            if (result.result === "success") {
-                alert("저장되었습니다.");
-                postSuccess();
-            } else if (result.result.startsWith("Duplicate")) {
-                alert("입력하신 그룹코드(${commonCode.groupCode})는 중복입니다.");
-                return false;
-            }
+            alert("저장되었습니다.");
+            postSuccess();
+        } else if (result.result.startsWith("Duplicate")) {
+            alert(`입력하신 그룹코드(${commonCode.groupCode})는 중복입니다.`);
+            return false;
         }
     };
     const deleteCommonCode = async () => {
@@ -132,12 +131,7 @@ export const CommonCodeModal: FC<ICommonCodeModalProps> = ({ groupId, postSucces
                             삭제
                         </button>
                     )}
-                    <button
-                        type='button'
-                        onClick={() => {
-                            setModal(!modal);
-                        }}
-                    >
+                    <button type='button' onClick={() => setModal(!modal)}>
                         나가기
                     </button>
                 </div>

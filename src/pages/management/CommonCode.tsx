@@ -1,8 +1,6 @@
-import { createContext } from "vm";
 import { ContentBox } from "../../components/common/ContentBox/ContentBox";
 import { CommonCodeMain } from "../../components/page/Management/CommonCode/CommonCodeMain/CommonCodeMain";
 import { CommonCodeSearch } from "../../components/page/Management/CommonCode/CommonCodeSearch/CommonCodeSearch";
-import React, { FC, useState } from "react";
 import { CommonCodeProvider } from "../../api/Provider/CommonCodeProvider";
 
 export const CommonCode = () => {

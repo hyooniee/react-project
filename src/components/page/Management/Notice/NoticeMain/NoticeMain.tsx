@@ -9,19 +9,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "../../../../../stores/modalState";
 import { searchApi } from "../../../../../api/NoticeApi/searchApi";
 import { Notice } from "../../../../../api/api";
-
-export interface INotice {
-    noticeId: number;
-    title: string;
-    content: string;
-    author: string;
-    createdDate: string;
-}
-
-interface INoticeListBodyResponse {
-    noticeList: INotice[];
-    noticeCnt: number;
-}
+import { INotice, INoticeListBodyResponse } from "../../../../../models/interface/INotice";
 
 export const NoticeMain = () => {
     const { search } = useLocation(); //현재 url에 대한 정보를 가져옴 :search만 가져와서 쓸거야
@@ -43,15 +31,11 @@ export const NoticeMain = () => {
 
         const result = await searchApi<INoticeListBodyResponse, URLSearchParams>(Notice.search, searchParam);
 
-        if(result){
-            
-        }
-
-        axios.post("/management/noticeListBody.do", searchParam).then((res: AxiosResponse<INoticeListBodyResponse>) => {
-            setNoticeList(res.data.noticeList);
-            setNoticeCount(res.data.noticeCnt);
+        if (result) {
+            setNoticeList(result.noticeList);
+            setNoticeCount(result.noticeCnt);
             setCPage(currentPage);
-        }); //ajax랑 비슷
+        }
     };
 
     const handlerModal = (id: number) => {
@@ -81,7 +65,7 @@ export const NoticeMain = () => {
                         noticeList.map((notice) => {
                             return (
                                 <tr key={notice.noticeId}>
-                                    <StyledTd>{notice.noticeId}</StyledTd>{" "}
+                                    <StyledTd>{notice.noticeId}</StyledTd>
                                     {/* () => handlerModal(notice.noticeId) :handlerModal를  호출 시키는 함수 */}
                                     <StyledTd onClick={() => handlerModal(notice.noticeId)}>{notice.title}</StyledTd>
                                     <StyledTd>{notice.author}</StyledTd>
@@ -91,7 +75,7 @@ export const NoticeMain = () => {
                         })
                     ) : (
                         <tr>
-                            <StyledTd colSpan={3}>데이터가 없습니다.</StyledTd>
+                            <StyledTd colSpan={4}>데이터가 없습니다.</StyledTd>
                         </tr>
                     )}
                 </tbody>

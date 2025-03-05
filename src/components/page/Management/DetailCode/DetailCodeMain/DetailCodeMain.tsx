@@ -37,6 +37,7 @@ export const DetailCodeMain = () => {
     const searchDetailCode = () => {
         axios
             .post("/management/commonDetailCodeListJson.do", {
+                ...searchKeyword,
                 groupCode: state.groupCode,
                 currentPage: 1,
                 pageSize: 5,

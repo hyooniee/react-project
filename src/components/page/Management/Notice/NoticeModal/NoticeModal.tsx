@@ -5,28 +5,12 @@ import { NoticeModalStyled } from "./styled";
 import { modalState } from "../../../../../stores/modalState";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import axios, { Axios, AxiosResponse } from "axios";
-import { INotice } from "../NoticeMain/NoticeMain";
+import { INoticeDetail, INoticeDetailResponse, IPostResponse } from "../../../../../models/interface/INotice";
 
 interface INoticeModalProps {
     noticeId: number;
     setNoticeId: React.Dispatch<React.SetStateAction<number>>;
     postSuccess: () => void;
-}
-
-interface INoticeDetail extends INotice {
-    fileName: string | null;
-    fileExt: string | null;
-    fileSize: number;
-    physicalPath: string | null;
-    logicalPath: string | null;
-}
-
-interface INoticeDetailResponse {
-    detailValue: INoticeDetail;
-}
-
-interface IPostResponse {
-    result: "success" | "fail";
 }
 
 //key, value : form, queryParam       props: readOnly
@@ -45,9 +29,7 @@ export const NoticeModal: FC<INoticeModalProps> = ({ noticeId, setNoticeId, post
         };
     }, []);
 
-    const searchDetail = async () => {
-        const result = await axios.post();
-
+    const searchDetail = () => {
         axios
             .post("/management/noticeFileDetailBody.do", { noticeId })
             .then((res: AxiosResponse<INoticeDetailResponse>) => {
@@ -146,8 +128,8 @@ export const NoticeModal: FC<INoticeModalProps> = ({ noticeId, setNoticeId, post
                 document.body.appendChild(link);
                 link.click();
 
-                //document.body.removeChild(link);
-                //window.URL.revokeObjectURL(url);
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
             });
     };
 

@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { Login } from './api';
+import axios, { AxiosResponse } from "axios";
+import { Login } from "./api";
 
 export const postLoginApi = async (param: URLSearchParams) => {
     try {

@@ -1,4 +1,3 @@
-import { Notice } from "./../pages/management/Notice";
 export const Login = {
     login: "/loginProc.do",
 };
@@ -12,5 +11,5 @@ export const CommonCode = {
 } as const;
 
 export const Notice = {
-    noticeList: "",
+    search: "/management/noticeListBody.do",
 };

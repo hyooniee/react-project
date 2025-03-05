@@ -12,7 +12,7 @@ export const CommonCodeSearch = () => {
         { label: "그룹코드명", value: "groupName" },
         { label: "그룹코드", value: "groupCode" },
     ];
-    const [modal, setModal] = useRecoilState<boolean>(modalState);
+    const [modal, setModal] = useRecoilState(modalState);
     const [selectValue, setSelectValue] = useState<string>("groupName");
 
     const inputValue = useRef<HTMLInputElement>();
